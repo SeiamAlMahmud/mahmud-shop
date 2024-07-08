@@ -19,6 +19,7 @@ import ListItemText from '@mui/material/ListItemText';
 import InboxIcon from '@mui/icons-material/MoveToInbox';
 import MailIcon from '@mui/icons-material/Mail';
 import { Link, NavLink } from 'react-router-dom';
+import { MyContext } from '../contextAPI/MyArrayContext';
 
 const drawerWidth = 240;
 
@@ -85,7 +86,7 @@ export default function PersistentDrawerRight() {
     const handleDrawerClose = () => {
         setOpen(false);
     };
-
+const {pdArray: selectedProduct} = React.useContext(MyContext)
     return (
         <Box sx={{ display: 'flex' }}>
             <CssBaseline />
@@ -94,15 +95,17 @@ export default function PersistentDrawerRight() {
                     <Typography variant="h6" noWrap sx={{ flexGrow: 1 }} component="div">
                         <Link to={'/'}>Mahmud's Shop</Link>
                     </Typography>
+                  
                     <IconButton
                         color="inherit"
                         aria-label="open drawer"
                         edge="end"
                         onClick={handleDrawerOpen}
                         sx={{ ...(open && { display: 'none' }) }}
-                    >
+                        >
                         <MenuIcon />
                     </IconButton>
+               
                 </Toolbar>
             </AppBar>
             <Main open={open}>
@@ -143,7 +146,10 @@ export default function PersistentDrawerRight() {
                         <Link to={'/'} className='w-full inline-block'> <i className='bx bx-home text-xl'></i> Home</Link>
                     </ListItemButton>
                     <ListItemButton>
+                      
                         <Link to={'/review'} className='w-full inline-block'> <i className='bx bx-paper-plane text-xl' ></i> Review</Link>
+                        { selectedProduct.length !== 0 &&   <p className='absolute px-1 rounded-[50%] bg-red-600 top-0 font-thin text-[16px] left-24'>{selectedProduct.length}</p>}
+                       
                     </ListItemButton>
                 </List>
                 <Divider />

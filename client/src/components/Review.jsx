@@ -4,6 +4,7 @@ import ReviewCart from './ReviewCart'
 import { NavLink } from 'react-router-dom'
 import Searching from './Searching'
 import MultiActionAreaCard from './MultiActionAreaCard'
+import Popup from './Popup'
 
 function Review() {
     const { pdArray, removeToArray, storeProduct, uniqueArray, selectedPrice, vatVal, grandTotal, shipping} = useContext(MyContext);
@@ -41,16 +42,10 @@ function Review() {
                 pdArray.length !== 0 ? (
 
               <div className="dropdown dropdown-end ">
-                    <div tabIndex={0} role="button" className="btn m-1 bg-[#80669d]">CheckOut</div>
-                    <span tabIndex={0} className="dropdown-content bg-[#5adbb5] z-[1]  pl-2  menu p-2 shadow relative  rounded-box w-56 gap-y-4 min-h-60">
-                        <p className='text-xl' >Total items: {pdArray.length}</p>
-                        <p className='text-xl' >Total price: $ {selectedPrice}</p>
-                        <p className='text-xl' >Vat(5%): $ {vatVal}</p>
-                        <p className='text-xl' >Shipping Cost: $ {shipping}</p>
-                        <p className='text-xl inline-block  bg-[#508776] py-1 rounded text-white' >Grand Total: $ {grandTotal}</p>
-                       
-                    <button className='bg-black py-2  bottom-7  text-white hover:bg-[#57dfd8] hover:text-black' ><NavLink to={"/checkout"}>Check Out</NavLink></button>
-                    </span>
+                    <Popup>
+                    <div tabIndex={0} role="button" className="btn m-1 bg-[#791ce3]">CheckOut</div>
+
+                    </Popup>
                 </div>
                 ) : ""
               }  
@@ -63,7 +58,7 @@ function Review() {
                         <svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <path fillRule="evenodd" clipRule="evenodd" d="M24 4C12.96 4 4 12.96 4 24C4 35.04 12.96 44 24 44C35.04 44 44 35.04 44 24C44 12.96 35.04 4 24 4ZM24 26C22.9 26 22 25.1 22 24V16C22 14.9 22.9 14 24 14C25.1 14 26 14.9 26 16V24C26 25.1 25.1 26 24 26ZM26 34H22V30H26V34Z" fill="#E92C2C" />
                         </svg>
-                        <div className="flex w-full justify-between">
+                        <div className="flex w-full justify-around px-2">
                             <div className="flex flex-col">
                                 <span className="text-content2">You didn't add product.</span>
                             </div>

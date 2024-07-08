@@ -27,6 +27,7 @@ const Navbar = () => {
             <button className="btn btn-ghost btn-primary dark:text-white text-xl ">Mahmud's Shop</button>
           </Link>
         </div>
+       
         <div className="flex-none ">
           <div className='flex gap-5'>
 
