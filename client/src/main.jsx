@@ -14,6 +14,9 @@ import MyArrayContext from './contextAPI/MyArrayContext.jsx';
 import CheckOut from './components/CheckOut';
 import Bag from './components/Bag';
 import MySneakers from './components/MySneakers';
+import Inventory from './components/inventory/Inventory.jsx';
+import { ToastContainer } from 'react-toastify';
+import Login from './components/Login.jsx';
 
 const router = createBrowserRouter([
   {
@@ -32,6 +35,10 @@ const router = createBrowserRouter([
        loader: () => fetch('/products.json')
       },
       {
+        path: "/login",
+        element: <Login />,
+      },
+      {
         path: "/product/:id",
         element: <ProductDetails></ProductDetails>
       },
@@ -48,6 +55,10 @@ const router = createBrowserRouter([
         path: "/mysneaker",
         element: <MySneakers></MySneakers>,
       },
+      {
+        path: "/inventory",
+        element: <Inventory />,
+      },
     ]
   },
 ]);
@@ -58,6 +69,7 @@ ReactDOM.createRoot(document.getElementById('root')).render(
     <MyArrayContext>
 
     <RouterProvider router={router} />
+    <ToastContainer />
     </MyArrayContext>
   </React.StrictMode>,
 )

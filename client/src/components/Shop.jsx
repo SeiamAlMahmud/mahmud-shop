@@ -8,25 +8,34 @@ import UseFetch from '../hooks/UseFetch';
 import Loading from './Loading';
 import MultiActionAreaCard from './MultiActionAreaCard';
 import water from '../water/water_notification.mp3'
+import 'ldrs/lineSpinner'
+
+
 function Shop() {
   // Loading trigger state 
   const [pageLoading, setPageLoading] = useState(true);
+  const [pageLoading2, setPageLoading2] = useState(true);
+  const { storeProduct,count, setCount,products } = useContext(MyContext)
   //  Fetch Data from Custom Hooks 
-  const products = UseFetch()
-
+console.log(products)
 
   // Loading Time Set 
+
   useEffect(() => {
-    const loadingTime = setTimeout(() => setPageLoading(false), 2000);
+    const loadingTime = setTimeout(() => setPageLoading2(false), 50);
     return () => clearTimeout(loadingTime)
   }, [])
-
+  useEffect(() => {
+    const loadingTime = setTimeout(() => setPageLoading(false), 50);
+    
+    return () => clearTimeout(loadingTime)
+  }, [])
+  
   // play Audio Button 
   const play = () => {
     new Audio(water).play()
   }
 
-  const { storeProduct } = useContext(MyContext)
     // Add product to Array 
   const productHandle = (myProduct) => {
     storeProduct(myProduct)
@@ -37,10 +46,15 @@ function Shop() {
   return (
     <div className='min-h-screen'>
     
-          <span className={`flex justify-center duration-100 ${!pageLoading ? 'hidden' : 'block'}`}><Loading ></Loading></span>
+          <span className={`flex justify-center items-center h-screen bg-gray-600 bg-opacity-70  duration-100 ${!pageLoading ? 'hidden' : 'block'}`}>
+<l-line-spinner
+  size="60"
+  speed="1"
+  color="white" 
+></l-line-spinner></span>
           
 
-          <div className={`grid  place-items-center gap-y-4 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 my-6 ${pageLoading ? 'hidden' : 'block'}`} >
+          <div className={`grid  place-items-center gap-y-4 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 my-6 ${pageLoading2 ? 'hidden' : 'block'}`} >
 
             {
               products.map((productsList, idx) => {
@@ -50,7 +64,7 @@ function Shop() {
             }
           </div>
 
-      }
+    
 
       {/* <Products key={productsList.id} showAddCart={true} productsList={productsList} productHandle={productHandle} /> */}
 

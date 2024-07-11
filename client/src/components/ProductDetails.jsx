@@ -1,18 +1,30 @@
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { NavLink, useParams } from 'react-router-dom'
-import products from '../productsData/products.json'
-import Products from './Products';
 import IconBreadcrumbs from './IconBreadcrumbs';
 import { CardMedia } from '@mui/material';
 import AOS from 'aos';
+import { MyContext } from '../contextAPI/MyArrayContext';
 // import Navbar from './Navbar';
 function ProductDetails() {
   const { id } = useParams();
   const [myData, setMyData] = useState([]);
   // AOS call
   AOS.init();
-  const updateData = products.find(item => item.id == id)
-  const { name, img, seller } = updateData;
+  // const [updateData, setUpdateData] = useState({})
+  const { products } = useContext(MyContext)
+  const updateData = products.filter(items => items.id === id)
+  // useEffect(()=>{
+  //   const url = `http://127.0.0.1:3000/product/${id}`
+  //   fetch(url)
+  //   .then(res=> res.json())
+  //   .then(data => setUpdateData(data))
+  // },[])
+  console.log(updateData)
+  let singleData = {...updateData[0] }
+  
+ 
+  // const updateData = products.find(item => item.id == id)
+  const { name, img, seller } = singleData;
 
   // console.log(id,updateData);
   return (

@@ -78,7 +78,7 @@ const DrawerHeader = styled('div')(({ theme }) => ({
 export default function PersistentDrawerRight() {
     const theme = useTheme();
     const [open, setOpen] = React.useState(false);
-
+const {user,handleLogOut} = React.useContext(MyContext)
     const handleDrawerOpen = () => {
         setOpen(true);
     };
@@ -95,7 +95,8 @@ const {pdArray: selectedProduct} = React.useContext(MyContext)
                     <Typography variant="h6" noWrap sx={{ flexGrow: 1 }} component="div">
                         <Link to={'/'}>Mahmud's Shop</Link>
                     </Typography>
-                  
+              {  user &&  <button onClick={handleLogOut} className='border
+              border-red-500 px-1 py-1 rounded-md bg-red-500 hover:bg-red-600 cursor-pointer text-gray-200'> Log Out</button>}
                     <IconButton
                         color="inherit"
                         aria-label="open drawer"
