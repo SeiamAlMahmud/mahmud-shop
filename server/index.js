@@ -3,6 +3,7 @@ const express = require('express')
 const app = express()
 const multer = require('multer');
 const path = require('path');
+const fs = require('fs');
 const cors = require('cors')
 require('dotenv').config()
 const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
@@ -45,7 +46,7 @@ async function run() {
         cb(null, 'uploads/');
       },
       filename: (req, file, cb) => {
-        cb(null, Date.now() + path.extname(file.originalname));
+        cb(null, Date.now() + '-' + path.extname(file.originalname));
       }
     });
     
@@ -70,21 +71,37 @@ async function run() {
       if (!req.file) {
         return res.status(400).send('No file uploaded.');
       }
-    console.log(req.body)
-      const { name, price, quantity ,description} = req.body;
-      const imageUrl = `http://127.0.0.1:3000/uploads/${req.file.filename}`;
-    
+      console.log(req.body)
       try {
-        // const result =await productsCollection.insertOne(user)
-        const result = await productsCollection.insertOne({
-          name,
-          price: parseFloat(price),
-          quantity: parseInt(quantity),
-          imageUrl,
-          description
-        });
+    const img = fs.readFileSync(path.join(__dirname, 'uploads', req.file.filename))
+   
+    const encode_image = img.toString('base64');
+
+    const finalImg = {
+      contentType: req.file.mimetype,
+      img: encode_image,
+      name: req.body.name,
+      price: req.body.price,
+      quantity: req.body.quantity,
+      description: req.body.description,
+  };
+
+  const result = await productsCollection.insertOne(finalImg);
+            res.status(200).json({ id: result.insertedId });
+      
+      // const { name, price, quantity ,description} = req.body;
+      // const imageUrl = `http://127.0.0.1:3000/uploads/${req.file.filename}`;
     
-        res.status(201).json({ message: 'Product added successfully', id: result.insertedId });
+        // const result =await productsCollection.insertOne(user)
+        // const result = await productsCollection.insertOne({
+        //   name,
+        //   price: parseFloat(price),
+        //   quantity: parseInt(quantity),
+        //   imageUrl,
+        //   description
+        // });
+    
+        // res.status(201).json({ message: 'Product added successfully', id: result.insertedId });
       } catch (error) {
         console.error('Error saving to database:', error);
         res.status(500).send('Error saving to database');

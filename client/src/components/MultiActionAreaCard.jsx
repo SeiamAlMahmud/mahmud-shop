@@ -7,12 +7,12 @@ import { Button, CardActionArea, CardActions } from '@mui/material';
 import { NavLink } from 'react-router-dom';
 
 export default function MultiActionAreaCard({ productsList, productHandle }) {
-    const { name, id, seller, img, category, price } = productsList
+    const { name, _id, seller, img, category, price } = productsList
     return (
         <>
             <Card sx={{ maxWidth: 345 }}>
                 <CardActionArea>
-                    <NavLink to={`/product/${id}`}>
+                    <NavLink to={`/product/${_id}`}>
                         <CardMedia
                             component="img"
                             height="140"
@@ -21,7 +21,7 @@ export default function MultiActionAreaCard({ productsList, productHandle }) {
                         /></NavLink>
                     <CardContent>
                         <Typography gutterBottom variant="h5" component="div">
-                            <NavLink to={`/product/${id}`}><span className='py-10'>{name}</span></NavLink>
+                            <NavLink to={`/product/${_id}`}><span className='py-10'>{name}</span></NavLink>
                         </Typography>
                         <Typography variant="body2" color="text.secondary">
                             <div className='flex-col flex text-xl'>

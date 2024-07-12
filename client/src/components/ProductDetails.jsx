@@ -6,25 +6,26 @@ import AOS from 'aos';
 import { MyContext } from '../contextAPI/MyArrayContext';
 // import Navbar from './Navbar';
 function ProductDetails() {
-  const { id } = useParams();
+  const {id}  = useParams();
+  console.log(id)
   const [myData, setMyData] = useState([]);
   // AOS call
   AOS.init();
   // const [updateData, setUpdateData] = useState({})
   const { products } = useContext(MyContext)
-  const updateData = products.filter(items => items.id === id)
+  const updateData = products.filter(items => items._id === id)
   // useEffect(()=>{
   //   const url = `http://127.0.0.1:3000/product/${id}`
   //   fetch(url)
   //   .then(res=> res.json())
   //   .then(data => setUpdateData(data))
   // },[])
-  console.log(updateData)
   let singleData = {...updateData[0] }
+  console.log(singleData)
   
  
   // const updateData = products.find(item => item.id == id)
-  const { name, img, seller } = singleData;
+  const { name, img, seller,contentType } = singleData;
 
   // console.log(id,updateData);
   return (
@@ -33,7 +34,12 @@ function ProductDetails() {
 
 
 
-      <div  className="hero min-h-screen  mt-5 " style={{ backgroundImage: `url(${img})` }}>
+      <div  className="hero min-h-screen  mt-5 " style={{ backgroundImage: `url(data:${contentType};base64,${img})` }}>
+      {/* <img
+                        src={`data:${contentType};base64,${img}`}
+                        alt={name}
+                        style={{ width: '900px', height: 'auto' }}
+                    /> */}
         <div className="hero-overlay bg-opacity-60"></div>
         <div className="hero-content text-center text-neutral-content">
           <div className="max-w-sm">
