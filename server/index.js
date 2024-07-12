@@ -1,9 +1,11 @@
 const bodyParser = require('body-parser');
 const express = require('express')
 const app = express()
+const multer = require('multer');
+const path = require('path');
 const cors = require('cors')
 require('dotenv').config()
-const { MongoClient, ServerApiVersion } = require('mongodb');
+const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
 const port = process.env.PORT || 3000
 
 
@@ -38,7 +40,17 @@ async function run() {
     const usersCollection = database.collection('users')
     const productsCollection = database.collection('products')
 
-
+    const storage = multer.diskStorage({
+      destination: (req, file, cb) => {
+        cb(null, 'uploads/');
+      },
+      filename: (req, file, cb) => {
+        cb(null, Date.now() + path.extname(file.originalname));
+      }
+    });
+    
+    const upload = multer({ storage: storage });
+    
     // get all users
     app.get('/users', async (req, res) => {
       
@@ -54,9 +66,36 @@ async function run() {
 
       }
     })
+    app.post('/addProduct', upload.single('image'), async (req,res) => {
+      if (!req.file) {
+        return res.status(400).send('No file uploaded.');
+      }
+    console.log(req.body)
+      const { name, price, quantity ,description} = req.body;
+      const imageUrl = `http://127.0.0.1:3000/uploads/${req.file.filename}`;
+    
+      try {
+        // const result =await productsCollection.insertOne(user)
+        const result = await productsCollection.insertOne({
+          name,
+          price: parseFloat(price),
+          quantity: parseInt(quantity),
+          imageUrl,
+          description
+        });
+    
+        res.status(201).json({ message: 'Product added successfully', id: result.insertedId });
+      } catch (error) {
+        console.error('Error saving to database:', error);
+        res.status(500).send('Error saving to database');
+      } 
+     
+
+    }
+    )
     app.post('/addUser', async (req,res) => {
       const user = req.body
-      console.log(user)
+      // console.log(user)
       const isAvailable = await usersCollection.find({email: user.email}).toArray()
       console.log(isAvailable)
       if (isAvailable.length == 0) {
@@ -85,6 +124,12 @@ async function run() {
       console.log(req.params.key)
       const result = await productsCollection.find({id: req.params.key}).toArray();
       res.json(result[0])
+    })
+    app.get('/productbyid', async (req,res) => {
+      console.log(req.query.id)
+      
+      const result = await productsCollection.find({_id:  new ObjectId(req.query.id)}).toArray();
+      res.send(result)
     })
   } finally {
     // Ensures that the client will close when you finish/error

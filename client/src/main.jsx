@@ -15,9 +15,8 @@ import CheckOut from './components/CheckOut';
 import Bag from './components/Bag';
 import MySneakers from './components/MySneakers';
 import Inventory from './components/inventory/Inventory.jsx';
-import { ToastContainer } from 'react-toastify';
 import Login from './components/Login.jsx';
-
+import { Toaster } from 'react-hot-toast';
 const router = createBrowserRouter([
   {
     path: "/",
@@ -69,7 +68,10 @@ ReactDOM.createRoot(document.getElementById('root')).render(
     <MyArrayContext>
 
     <RouterProvider router={router} />
-    <ToastContainer />
+    <Toaster
+  position="top-right"
+  reverseOrder={false}
+/>
     </MyArrayContext>
   </React.StrictMode>,
 )
